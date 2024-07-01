@@ -11,13 +11,13 @@ import jakarta.validation.Valid
 
 @Controller("/example")
 @Validated
-@ExecuteOn(TaskExecutors.IO)
+@ExecuteOn(TaskExecutors.VIRTUAL)
 class ExampleController(
     private val exampleService: ExampleService
 ) {
 
     @Post("/sample")
-    suspend fun sample(@Valid @Body req: ExampleDTO): ExampleResponseDTO =
+    fun sample(@Valid @Body req: ExampleDTO): ExampleResponseDTO =
         exampleService.sendToHttpbun(
             id = req.id,
             username = req.username

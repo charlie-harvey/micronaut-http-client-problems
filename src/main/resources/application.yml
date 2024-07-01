@@ -9,7 +9,7 @@ micronaut:
     httpbun-executor:
       name: httpbun-executor
       type: FIXED
-      virtual: false
+      virtual: true
   netty:
     event-loops:
       httpbun-elg:
