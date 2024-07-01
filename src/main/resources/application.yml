@@ -1,0 +1,28 @@
+micronaut:
+  application:
+    name: demo
+  executors:
+    io:
+      type: FIXED
+      nThreads: 25
+      virtual: false
+    httpbun-executor:
+      name: httpbun-executor
+      type: FIXED
+      virtual: false
+  netty:
+    event-loops:
+      httpbun-elg:
+        num-threads: 10
+        prefer-native-transport: true
+        executor: httpbun-executor
+  http:
+    services:
+      httpbun-client:
+        url: https://httpbun.org/
+        event-loop-group: httpbun-elg
+        prefer-native-transport: true
+        read-timeout: 10s
+        pool:
+          enabled: true
+          max-connections: 10
