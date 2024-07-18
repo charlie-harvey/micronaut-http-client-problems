@@ -3,8 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.plugin.allopen") version "1.9.23"
     id("com.google.devtools.ksp") version "1.9.23-1.0.19"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.3.8"
-    id("io.micronaut.aot") version "4.3.8"
+    id("io.micronaut.application") version "4.4.0"
+    id("io.micronaut.aot") version "4.4.0"
 }
 
 version = "0.1"
@@ -33,6 +33,13 @@ dependencies {
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
     runtimeOnly("org.yaml:snakeyaml")
     runtimeOnly("io.netty:netty-transport-native-kqueue::osx-aarch_64")
+
+    kspTest("io.micronaut:micronaut-inject-java")
+    testImplementation("io.micronaut.test:micronaut-test-kotest5")
+    testImplementation("io.mockk:mockk")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm")
+    testImplementation("io.kotest:kotest-property")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
 }
 
 
@@ -68,9 +75,12 @@ micronaut {
     }
 }
 
-
-tasks.named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative") {
-    jdkVersion = "21"
+// use JUnit 5 platform
+tasks {
+    test {
+        useJUnitPlatform()
+    }
+    named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative") {
+        jdkVersion = "21"
+    }
 }
-
-

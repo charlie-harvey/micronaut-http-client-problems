@@ -8,5 +8,7 @@ data class ExampleDTO(
     @field:NotNull
     val id: Int,
     @field:NotNull
-    val username: String
+    val username: String,
+    @field:NotNull
+    val wait: Int
 )

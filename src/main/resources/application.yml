@@ -4,25 +4,18 @@ micronaut:
   executors:
     io:
       type: FIXED
-      nThreads: 25
+      n-threads: 100
+      number-of-threads: 100
       virtual: false
-    httpbun-executor:
-      name: httpbun-executor
-      type: FIXED
-      virtual: true
-  netty:
-    event-loops:
-      httpbun-elg:
-        num-threads: 10
-        prefer-native-transport: true
-        executor: httpbun-executor
   http:
+    client:
+      read-timeout: 30s        ## <<-- Seems to work
     services:
-      httpbun-client:
-        url: https://httpbun.org/
-        event-loop-group: httpbun-elg
+      httpbun:
+        url: http://127.0.0.1/
+        # read-timeout: 30s        ## <<-- Doesn't seem to work
         prefer-native-transport: true
-        read-timeout: 10s
+        num-of-threads: 10
         pool:
           enabled: true
-          max-connections: 10
+          max-connections: 25

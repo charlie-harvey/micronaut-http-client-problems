@@ -1,8 +1,8 @@
 package com.example.service
 
-import com.example.ExampleType
 import com.example.client.HttpbunClient
-import com.example.client.HttpbunDTO
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.client.exceptions.HttpClientResponseException
 import jakarta.inject.Singleton
 import kotlinx.coroutines.runBlocking
 
@@ -11,17 +11,14 @@ class ExampleService(
     private val httpbunClient: HttpbunClient
 ) {
 
-    fun sendToHttpbun(id: Int, username: String): ExampleDomainObject = runBlocking {
-        val resp = httpbunClient.postExample1(
-            HttpbunDTO(
-                id = id,
-                username = username,
-                type = ExampleType.Things
-            )
-        ).body()
-        ExampleDomainObject(
-            url = resp.url,
-            type = ExampleType.Things
-        )
+    fun httpbunDelay(
+        wait: Int
+    ): HttpResponse<Unit> = runBlocking {
+        try {
+            httpbunClient.delay(wait = wait)
+        } catch (ex: HttpClientResponseException) {
+            println(ex.localizedMessage)
+            throw ex
+        }
     }
 }
