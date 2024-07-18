@@ -20,7 +20,10 @@ class ExampleControllerTest(
     private val httpbunClient: HttpbunClient
 ): AnnotationSpec() {
 
-    @Ignore
+    /**
+     * This works every time! No matter the timeout.
+     */
+    @Test
     suspend fun testClientDirectly() = coroutineScope {
         repeat(20) {
             launch {
@@ -33,16 +36,19 @@ class ExampleControllerTest(
         }
     }
 
+    /**
+     * This fails if `micronaut.http.client.read-timeout` is not set and the wait time is over 10 seconds
+     */
     @Test
     suspend fun testController() = coroutineScope {
         repeat(20) {
             launch {
                 repeat(5) {
                     // val genWait = Arb.nonNegativeInt(15).next()
-                    val genWait = 10   // Any Value >= 10 will fail if `micronaut.http.client.read-timeout` is not set
+                    val genWait = 10
                     val req = HttpRequest.GET<HttpResponse<Unit>>("/example/delay/${genWait}")
                     client.exchange(req).asFlow().collect { resp ->
-                        println(" ** ExampleControllerTest - httpbun delay ($genWait) response status: ${resp.status}")
+                        println(" ** ExampleControllerTest - delay ($genWait) response status: ${resp.status}")
                     }
                 }
             }
