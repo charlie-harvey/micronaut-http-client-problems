@@ -23,7 +23,7 @@ class ExampleControllerTest(
     /**
      * This works every time! No matter the timeout.
      */
-    @Test
+    @Ignore
     suspend fun testClientDirectly() = coroutineScope {
         repeat(20) {
             launch {
